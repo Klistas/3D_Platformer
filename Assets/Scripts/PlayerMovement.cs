@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public float MoveSpeed; // 이동속도
     public float JumpPower; // 점프력
     public float RotateSpeed; // 회전속도
+    public float RespawnHeight; // 리스폰 하는 높이
 
     [Header("2. 지면 감지 관련 설정값")]
     public Transform GroundCheckPos; // 플레이어의 발밑 위치
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded; // 지면 감지용
     private float targetX;// X축 회전값
     private float targetY; // Y축 회전값
+    private Vector3 spawnPoint; // 리스폰 포인트
 
 
     void Start()
@@ -33,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         targetY = CameraRoot.transform.rotation.eulerAngles.y;
+        spawnPoint = transform.position;
     }
 
     // 입력부
@@ -79,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
         GroundCheck();
+        CheckRespawn();
     }
     
     /// <summary>
@@ -153,6 +157,21 @@ public class PlayerMovement : MonoBehaviour
 
             // 최종 속도 = 최종 벡터의 X값,Z값만 가지고 오면 됨.
             rb.linearVelocity = new Vector3(finalVelocity.x,rb.linearVelocity.y,finalVelocity.z);
+        }
+    }
+
+    /// <summary>
+    /// 특정 위치까지 떨어지면 리스폰하게 만드는 함수.
+    /// </summary>
+    private void CheckRespawn()
+    {
+        // 만약, 플레이어의 높이가 특정 수치보다 낮으면
+        if(transform.position.y <= RespawnHeight)
+        {
+            // 현재 위치를 저장된 스폰 포인트로 옮기고
+            transform.position = spawnPoint;
+            // 속력을 초기화한다.
+            rb.linearVelocity = Vector3.zero;
         }
     }
 

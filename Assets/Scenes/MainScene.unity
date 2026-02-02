@@ -274,6 +274,7 @@ MonoBehaviour:
   MoveSpeed: 5
   JumpPower: 7
   RotateSpeed: 0.5
+  RespawnHeight: -10
   GroundCheckPos: {fileID: 1460957171}
   GroundCheckRadius: 0.45
   GroundCheckLayerMask:
