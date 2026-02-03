@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
     public void OnJump(InputValue value)
     {
         //땅에 닿아있을때만 점프가능.
-        if(isGrounded)
+        if (isGrounded)
         {
             // 현재 점프하고 있는 속력 초기화.
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         if (GroundCheckPos != null)
         {
             // 만약, 그라운드 레이어가 감지되면 true, 아니면 false
-            isGrounded = Physics.CheckSphere(GroundCheckPos.position,GroundCheckRadius,GroundCheckLayerMask,QueryTriggerInteraction.Ignore);
+            isGrounded = Physics.CheckSphere(GroundCheckPos.position, GroundCheckRadius, GroundCheckLayerMask, QueryTriggerInteraction.Ignore);
         }
         else
         {
@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
         GroundCheck();
         CheckRespawn();
     }
-    
+
 
     /// <summary>
     /// 카메라를 마우스 입력에 따라 플레이어를 기준으로 회전하도록 만듬.
@@ -124,14 +124,14 @@ public class PlayerMovement : MonoBehaviour
         targetY += lookInput.x * RotateSpeed;
 
         // 상하회전, 카메라 반전 여부에 따라 더하고 빼줌.
-        if(InvertXAxis)
+        if (InvertXAxis)
             targetX += lookInput.y * RotateSpeed;
         else
             targetX -= lookInput.y * RotateSpeed;
 
         // 상하 이동은 정해진 값 안에서만, 좌우이동은 float 최대,최소값으로
         targetX = Mathf.Clamp(targetX, BottomClamp, TopClamp);
-        targetY = Mathf.Clamp(targetY,float.MinValue,float.MaxValue);
+        targetY = Mathf.Clamp(targetY, float.MinValue, float.MaxValue);
 
         // 좌우로 회전하면, 플레이어의 몸 자체가 회전함.
         transform.rotation = Quaternion.Euler(0f, targetY, 0f);
@@ -148,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         // 이동 입력이 있을때만 이동
-        if(moveInput != Vector2.zero)
+        if (moveInput != Vector2.zero)
         {
             // 보고 있는 방향 확인용
             Vector3 forward = transform.forward;
@@ -169,10 +169,10 @@ public class PlayerMovement : MonoBehaviour
             Vector3 finalVelocity = moveDir * MoveSpeed;
 
             // 최종 속도 = 최종 벡터의 X값,Z값만 가지고 오면 됨.
-            rb.linearVelocity = new Vector3(finalVelocity.x,rb.linearVelocity.y,finalVelocity.z);
+            rb.linearVelocity = new Vector3(finalVelocity.x, rb.linearVelocity.y, finalVelocity.z);
 
             // 기존 최종 움직임 벡터 길이를 가져와서 애니메이션 적용.
-            Animator.SetFloat(animIDSpeed,finalVelocity.magnitude,0.01f,Time.deltaTime);
+            Animator.SetFloat(animIDSpeed, finalVelocity.magnitude, 0.01f, Time.deltaTime);
         }
         else // 이동 입력이 없을때
         {
@@ -187,19 +187,27 @@ public class PlayerMovement : MonoBehaviour
     private void CheckRespawn()
     {
         // 만약, 플레이어의 높이가 특정 수치보다 낮으면
-        if(transform.position.y <= RespawnHeight)
+        if (transform.position.y <= RespawnHeight)
         {
-            // 현재 위치를 저장된 스폰 포인트로 옮기고
-            transform.position = spawnPoint;
-            // 속력을 초기화한다.
-            rb.linearVelocity = Vector3.zero;
+            Respawn();
         }
+    }
+
+    /// <summary>
+    /// 플레이어를 리스폰하는 함수
+    /// </summary>
+    public void Respawn()
+    {
+        // 현재 위치를 저장된 스폰 포인트로 옮기고
+        transform.position = spawnPoint;
+        // 속력을 초기화한다.
+        rb.linearVelocity = Vector3.zero;
     }
 
     private void OnDrawGizmosSelected()
     {
         // 지면 체크 위치가 있을때만
-        if(GroundCheckPos != null)
+        if (GroundCheckPos != null)
         {
             //기즈모 색 결정
             Gizmos.color = Color.green;
