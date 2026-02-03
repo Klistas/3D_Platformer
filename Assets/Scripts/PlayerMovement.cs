@@ -20,14 +20,18 @@ public class PlayerMovement : MonoBehaviour
     public float BottomClamp; // 아랫쪽 시야의 최솟값
     public bool InvertXAxis; // 상하 회전 반전 여부
 
+    public Animator Animator;
+
     //내부 변수
     private Rigidbody rb; // 물리엔진 이동용.
     private Vector2 moveInput; // 이동 입력값
     private Vector2 lookInput; // 회전 입력값
     private bool isGrounded; // 지면 감지용
-    private float targetX;// X축 회전값
+    private float targetX; // X축 회전값
     private float targetY; // Y축 회전값
     private Vector3 spawnPoint; // 리스폰 포인트
+    private int animIDSpeed; // 애니메이션 해시값 - Speed;
+    private int animIDJump; // 애니메이션 해시값 - Jump;
 
 
     void Start()
@@ -36,6 +40,10 @@ public class PlayerMovement : MonoBehaviour
 
         targetY = CameraRoot.transform.rotation.eulerAngles.y;
         spawnPoint = transform.position;
+
+        // 애니메이션 해시값 할당
+        animIDSpeed = Animator.StringToHash("Speed");
+        animIDJump = Animator.StringToHash("Jump");
     }
 
     // 입력부
@@ -71,20 +79,12 @@ public class PlayerMovement : MonoBehaviour
 
             // 위쪽을 향해 한번에 힘을 줌.
             rb.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
+
+            // 점프 트리거 실행.
+            Animator.SetTrigger(animIDJump);
         }
     }
-    void Update()
-    {
-        CameraRotation();
-    }
 
-    private void FixedUpdate()
-    {
-        Move();
-        GroundCheck();
-        CheckRespawn();
-    }
-    
     /// <summary>
     /// 지면에 닿았는지 감지하는 함수
     /// </summary>
@@ -101,6 +101,19 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogError("지면감지필요");
         }
     }
+
+    void Update()
+    {
+        CameraRotation();
+    }
+
+    private void FixedUpdate()
+    {
+        Move();
+        GroundCheck();
+        CheckRespawn();
+    }
+    
 
     /// <summary>
     /// 카메라를 마우스 입력에 따라 플레이어를 기준으로 회전하도록 만듬.
@@ -134,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void Move()
     {
-        // 이동 입력이 없을때.
+        // 이동 입력이 있을때만 이동
         if(moveInput != Vector2.zero)
         {
             // 보고 있는 방향 확인용
@@ -157,6 +170,14 @@ public class PlayerMovement : MonoBehaviour
 
             // 최종 속도 = 최종 벡터의 X값,Z값만 가지고 오면 됨.
             rb.linearVelocity = new Vector3(finalVelocity.x,rb.linearVelocity.y,finalVelocity.z);
+
+            // 기존 최종 움직임 벡터 길이를 가져와서 애니메이션 적용.
+            Animator.SetFloat(animIDSpeed,finalVelocity.magnitude,0.01f,Time.deltaTime);
+        }
+        else // 이동 입력이 없을때
+        {
+            // 이동 입력이 없으면, 속력을 0으로 하여 애니메이션 적용.
+            Animator.SetFloat(animIDSpeed, 0f, 0.01f, Time.deltaTime);
         }
     }
 
