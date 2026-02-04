@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public float JumpPower; // 점프력
     public float RotateSpeed; // 회전속도
     public float RespawnHeight; // 리스폰 하는 높이
+    public float WalkingDamping; // 걸을때 마찰력
 
     [Header("2. 지면 감지 관련 설정값")]
     public Transform GroundCheckPos; // 플레이어의 발밑 위치
@@ -95,6 +96,17 @@ public class PlayerMovement : MonoBehaviour
         {
             // 만약, 그라운드 레이어가 감지되면 true, 아니면 false
             isGrounded = Physics.CheckSphere(GroundCheckPos.position, GroundCheckRadius, GroundCheckLayerMask, QueryTriggerInteraction.Ignore);
+            // 땅에 붙어있을때는
+            if(isGrounded)
+            {
+                // 미리정해진 마찰력 적용
+                rb.linearDamping = WalkingDamping;
+            }
+            else
+            {
+                // 빨리 떨어질수있도록 마찰력 0 적용
+                rb.linearDamping = 0;
+            }
         }
         else
         {
