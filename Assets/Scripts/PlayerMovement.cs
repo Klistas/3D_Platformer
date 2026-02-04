@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 spawnPoint; // 리스폰 포인트
     private int animIDSpeed; // 애니메이션 해시값 - Speed;
     private int animIDJump; // 애니메이션 해시값 - Jump;
+    private Vector3 externalVelocity; // 외부에서 가해지는 힘
 
 
     void Start()
@@ -40,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         targetY = CameraRoot.transform.rotation.eulerAngles.y;
-        spawnPoint = transform.position;
 
         // 애니메이션 해시값 할당
         animIDSpeed = Animator.StringToHash("Speed");
@@ -124,6 +124,9 @@ public class PlayerMovement : MonoBehaviour
         Move();
         GroundCheck();
         CheckRespawn();
+
+        // 외부에서 가해지는 힘 초기화
+        externalVelocity = Vector3.zero;
     }
 
 
@@ -177,8 +180,8 @@ public class PlayerMovement : MonoBehaviour
             // 움직일 방향 벡터 = (앞쪽 방향 * W,S키 입력 + 옆쪽방향 * A,D키 입력).정규화;
             Vector3 moveDir = (forward * moveInput.y + right * moveInput.x).normalized;
 
-            // 최종적으로 움직일 벡터 = 움직일 방향 벡터 * 이동속도;
-            Vector3 finalVelocity = moveDir * MoveSpeed;
+            // 최종적으로 움직일 벡터 = (움직일 방향 벡터 * 이동속도) + 외부에서 가해지는 힘;
+            Vector3 finalVelocity = (moveDir * MoveSpeed) + externalVelocity;
 
             // 최종 속도 = 최종 벡터의 X값,Z값만 가지고 오면 됨.
             rb.linearVelocity = new Vector3(finalVelocity.x, rb.linearVelocity.y, finalVelocity.z);
@@ -188,6 +191,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else // 이동 입력이 없을때
         {
+            // 입력이 없을 때는 그대로 외부에 가해지는 힘만 대입함. y축 값은 기본 리지드바디의 속력을 가져옴. 
+            rb.linearVelocity = new Vector3(externalVelocity.x, rb.linearVelocity.y, externalVelocity.z);
             // 이동 입력이 없으면, 속력을 0으로 하여 애니메이션 적용.
             Animator.SetFloat(animIDSpeed, 0f, 0.01f, Time.deltaTime);
         }
@@ -214,6 +219,25 @@ public class PlayerMovement : MonoBehaviour
         transform.position = spawnPoint;
         // 속력을 초기화한다.
         rb.linearVelocity = Vector3.zero;
+    }
+
+    /// <summary>
+    /// 스폰포인트를 매개변수로 받아 변경.
+    /// </summary>
+    /// <param name="point">변경한 스폰포인트 위치</param>
+    public void SetSpawnPoint(Vector3 point)
+    {
+        // 스폰포인트를 받은 위치로 변경
+        spawnPoint = point;
+    }
+
+    /// <summary>
+    /// 외부에서 가해지는 힘을 더해주는 함수
+    /// </summary>
+    /// <param name="velocity">가해지는 힘</param>
+    public void AddExternalVelocity(Vector3 velocity)
+    {
+        externalVelocity += velocity;
     }
 
     private void OnDrawGizmosSelected()
