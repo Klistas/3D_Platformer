@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator Animator;
 
     //내부 변수
-    private Rigidbody rb; // 물리엔진 이동용.
+    [SerializeField] private Rigidbody rb; // 물리엔진 이동용.
     private Vector2 moveInput; // 이동 입력값
     private Vector2 lookInput; // 회전 입력값
     private bool isGrounded; // 지면 감지용
@@ -35,6 +35,10 @@ public class PlayerMovement : MonoBehaviour
     private int animIDJump; // 애니메이션 해시값 - Jump;
     private Vector3 externalVelocity; // 외부에서 가해지는 힘
 
+    private int Plus(int x, int y)
+    {
+        return x + y;
+    }
 
     void Start()
     {
@@ -45,6 +49,7 @@ public class PlayerMovement : MonoBehaviour
         // 애니메이션 해시값 할당
         animIDSpeed = Animator.StringToHash("Speed");
         animIDJump = Animator.StringToHash("Jump");
+        int plusNum = Plus(3, 10);
     }
 
     // 입력부

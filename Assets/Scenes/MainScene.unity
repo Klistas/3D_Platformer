@@ -347,6 +347,7 @@ MonoBehaviour:
   BottomClamp: -30
   InvertXAxis: 0
   Animator: {fileID: 1317062621}
+  rb: {fileID: 136133063}
 --- !u!136 &136133062
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2281,8 +2282,8 @@ MonoBehaviour:
   PuzzleSound: {fileID: 8300000, guid: 9fbdd40076b6d074ca9231314f0ac3d6, type: 3}
   GoalSound: {fileID: 8300000, guid: 23291891298cdd24683fb2e0c9e952e3, type: 3}
   BGMSound: {fileID: 8300000, guid: f72b0c11ca531174cab2982a58ccdb64, type: 3}
-  BGMVoulume: 0
-  SFXVoulume: 0
+  BGMVolume: 0
+  SFXVolume: 0
 --- !u!4 &1684330504 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5479765057739344060, guid: efcd01a6744092f479a59041a88cdbf8, type: 3}
