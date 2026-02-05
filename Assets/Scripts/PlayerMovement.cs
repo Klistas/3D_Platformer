@@ -81,6 +81,9 @@ public class PlayerMovement : MonoBehaviour
             // 위쪽을 향해 한번에 힘을 줌.
             rb.AddForce(Vector3.up * JumpPower, ForceMode.Impulse);
 
+            AudioManager.Instance.PlaySFX("점프");
+
+
             // 점프 트리거 실행.
             Animator.SetTrigger(animIDJump);
         }

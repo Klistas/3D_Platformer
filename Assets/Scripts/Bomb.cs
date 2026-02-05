@@ -46,8 +46,10 @@ public class Bomb : MonoBehaviour
     {
         //만약 폭발 반경내에 플레이어라면
         Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius);
+        AudioManager.Instance.PlaySFX("폭탄");
 
-        foreach(Collider col in colliders)
+
+        foreach (Collider col in colliders)
         {
             PlayerMovement player = col.GetComponent<PlayerMovement>();
 

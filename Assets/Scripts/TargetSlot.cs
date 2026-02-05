@@ -19,6 +19,9 @@ public class TargetSlot : MonoBehaviour
             // 리지바디의 isKinematic을 켜준다.
             rigid.isKinematic = true;
 
+            //사운드 실행
+            AudioManager.Instance.PlaySFX("퍼즐");
+
             // 그리고 박스가 슬롯에 부착되었는지의 여부를 true로 만들어준다.
             IsAttached = true;
         }

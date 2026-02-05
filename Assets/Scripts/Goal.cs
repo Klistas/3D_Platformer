@@ -47,6 +47,7 @@ public class Goal : MonoBehaviour
         {
             // ½Â¸® UI ¹× »ç¿îµå Ãâ·Â
             Debug.Log("½Â¸®~!!");
+            AudioManager.Instance.PlaySFX("µµÂø");
             isTriggered = true;
         }
     }

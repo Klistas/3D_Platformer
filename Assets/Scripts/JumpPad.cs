@@ -33,6 +33,8 @@ public class JumpPad : MonoBehaviour
     /// <param name="rigid">리지드 바디</param>
     private void PadJump(Rigidbody rigid)
     {
+        AudioManager.Instance.PlaySFX("점프패드");
+
         // 기존의 Y값을 초기화시켜야함.
         rigid.linearVelocity = new Vector3(rigid.linearVelocity.x,0, rigid.linearVelocity.z);
         // 점프력만큼 위쪽으로 힘을가해주어야함.
