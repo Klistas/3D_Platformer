@@ -48,6 +48,8 @@ public class Goal : MonoBehaviour
             // 승리 UI 및 사운드 출력
             Debug.Log("승리~!!");
             AudioManager.Instance.PlaySFX("도착");
+            // 게임 종료
+            GameManager.Instance.GameFinish();
             isTriggered = true;
         }
     }

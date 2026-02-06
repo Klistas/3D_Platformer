@@ -522,6 +522,7 @@ GameObject:
   m_Component:
   - component: {fileID: 285778862}
   - component: {fileID: 285778861}
+  - component: {fileID: 285778863}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -541,14 +542,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fe909eabdf068e44b91383108086be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameTimer
-  TimerText: {fileID: 0}
-  BestTimeText: {fileID: 0}
+  TimerText: {fileID: 1978028896}
+  BestTimeText: {fileID: 2142124090}
   CountdownText: {fileID: 876645545}
-  BestTimeKey: 
-  CountdownTime: 7
+  BestTimeKey: BestRecord
+  CountdownTime: 3
   CurrentTime: 0
   IsRunning: 0
   IsCountdown: 0
+  player: {fileID: 136133061}
 --- !u!4 &285778862
 Transform:
   m_ObjectHideFlags: 0
@@ -564,6 +566,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &285778863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285778860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 889efedd458484b45a5d29da64184e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
 --- !u!1 &316302773 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5851852096052850596, guid: 751f6145494b5ec4c8bcdf7b6a75a803, type: 3}
