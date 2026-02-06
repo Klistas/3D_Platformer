@@ -144,7 +144,7 @@ public class GameTimer : MonoBehaviour
         // 이전 기록을 불러오고, 없으면 0
         bestTime = PlayerPrefs.GetFloat(BestTimeKey, 0f);
         // 이전 기록을 UI에 적용
-        BestTimeText.text = FormattingTime(bestTime);
+        BestTimeText.text = "Best : " + FormattingTime(bestTime);
     }
 
     /// <summary>
